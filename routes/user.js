@@ -5,20 +5,24 @@ const bcrypt = require("bcryptjs");
 
 const router = express.Router();
 
-router.post("/reg", async (req, res) => {
+router.post("/register", async (req, res) => {
+  console.log("came");
   const { name, password, role } = req.body;
 
   try {
-    let user = await User.findOne({ name });
-    if (user) {
-      return res.status(400).json({ errors: [{ msg: "User already exists" }] });
-    }
+    let user;
+    //  = await User.findOne({ name });
+    // if (user) {
+    //   return res.status(400).json({ errors: [{ msg: "User already exists" }] });
+    // }
 
     user = new User({
       name,
       password,
       role,
     });
+
+    console.log(user);
 
     const salt = await bcrypt.genSalt(10);
 
@@ -28,7 +32,7 @@ router.post("/reg", async (req, res) => {
 
     res.send(user);
   } catch (error) {
-    console.log(error);
+    console.log("error -->", error);
   }
 });
 
@@ -76,6 +80,10 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+router.get("/test", (req, res) => {
+  res.send("Yes it is");
 });
 
 module.exports = router;

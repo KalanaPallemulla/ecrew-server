@@ -1,9 +1,13 @@
 import mongoose from "mongoose";
 
 const database = async () => {
-  await mongoose.connect(process.env.DB, {}, () => {
-    console.log("Database running successfully");
-  });
+  mongoose
+    .connect(process.env.DB, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => console.log("Database connected!"))
+    .catch((err) => console.log(err));
 };
 
 export default database;
