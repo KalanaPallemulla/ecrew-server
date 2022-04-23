@@ -9,6 +9,7 @@ import {
   updateSalon,
   active,
   deactivate,
+  getSalonBySearch,
 } from "../controllers/Salon";
 import formidable from "express-formidable";
 import Salon from "../models/Salon";
@@ -34,6 +35,7 @@ router.get("/salon/image/:id", async (req, res) => {
 
 router.post("/salon/locations", addLocation);
 router.get("/salon/locations", getLocations);
+router.get("/salonSearch", getSalonBySearch);
 
 router.get("/salon/:id", getSingleSalon);
 router.delete("/salon/:id", removeSalon);
