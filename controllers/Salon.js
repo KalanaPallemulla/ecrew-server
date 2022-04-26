@@ -3,13 +3,12 @@ import fs from "fs";
 import Location from "../models/Location";
 
 export const addSalon = async (req, res) => {
-  console.log("MMMMM");
   try {
     const fields = req.fields;
     const files = req.files;
     // console.log(files.image);
 
-    // console.log(fields);
+    console.log(fields);
 
     const { name, location, contact, openTime, closeTime, address } = fields;
 
@@ -38,16 +37,14 @@ export const addSalon = async (req, res) => {
     console.log(array);
     salon.salonSubType = array;
 
-    console.log(salon);
-
-    // salon.save((err, result) => {
-    //   if (err) {
-    //     console.log("Saving salon error =>", err);
-    //     res.status(400).json(err);
-    //   }
-    //   // res.send({ msg: "Salon Added" });
-    //   res.send(result);
-    // });
+    salon.save((err, result) => {
+      if (err) {
+        console.log("Saving salon error =>", err);
+        res.status(400).json(err);
+      }
+      // res.send({ msg: "Salon Added" });
+      res.status(200).send(result);
+    });
   } catch (err) {
     console.log(err);
     res.status(400).json({
@@ -77,7 +74,7 @@ export const getSalon = async (req, res) => {
         console.log(firstKey);
       }
       console.log(salonType.includes("%"));
-      let salon = await Salon.find({ salonType: firstKey })
+      let salon = await Salon.find(filter)
         .select("-images.data")
         .sort("-createdAt")
         .exec();

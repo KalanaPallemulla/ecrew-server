@@ -40,7 +40,7 @@ router.get("/salonSearch", getSalonBySearch);
 router.get("/salon/:id", getSingleSalon);
 router.delete("/salon/:id", removeSalon);
 router.put("/salon/:id", formidable(), updateSalon);
-router.put("/salon/:id", formidable(), updateSalon);
+// router.put("/salon/:id", formidable(), updateSalon);
 router.put("/salon/active/:id", active);
 
 router.put("/salon/deactivate/:id", deactivate);

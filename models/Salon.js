@@ -17,11 +17,11 @@ const salonSchema = new Schema(
     },
     openTime: {
       type: String,
-      required: true,
+      // required: true,
     },
     closeTime: {
       type: String,
-      required: true,
+      // required: true,
     },
     contact: {
       type: String,
