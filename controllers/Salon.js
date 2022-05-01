@@ -54,10 +54,11 @@ export const addSalon = async (req, res) => {
 };
 
 export const getSalon = async (req, res) => {
+  console.log(req.query);
   try {
     const filter = req.query;
-    const { salonType } = filter;
-    console.log(filter);
+    const { salonType, salonSubType } = filter;
+    console.log(salonType);
     if (!salonType) {
       let salon = await Salon.find()
         .select("-images.data")
@@ -67,18 +68,52 @@ export const getSalon = async (req, res) => {
         return res.status(400).send({ msg: " There are no salons" });
       res.json(salon);
     } else {
+      console.log("here");
       let firstKey;
-      if (salonType && salonType.includes("%")) {
-        firstKey = salonType.split("%");
-        firstKey = firstKey.join(" ");
-        console.log(firstKey);
+      let secondKey;
+      if (salonType && !salonSubType) {
+        console.log("salonType only");
+        if (salonType.includes("%")) {
+          firstKey = salonType.split("%");
+          firstKey = firstKey.join(" ");
+          console.log(firstKey);
+        } else {
+          firstKey = salonType;
+        }
+        let salon = await Salon.find({ salonType: firstKey })
+          .select("-images.data")
+          .sort("-createdAt")
+          .exec();
+
+        return res.json(salon);
+      } else {
+        console.log("salonType and sub Type");
+
+        if (salonType.includes("%")) {
+          firstKey = salonType.split("%");
+          firstKey = firstKey.join(" ");
+          console.log(firstKey);
+        } else {
+          firstKey = salonType;
+        }
+        if (salonSubType.includes("%")) {
+          secondKey = salonSubType.split("%");
+          secondKey = secondKey.join(" ");
+          console.log(secondKey);
+        } else {
+          secondKey = salonSubType;
+        }
+        let salon = await Salon.find({
+          salonType: firstKey,
+          salonSubType: secondKey,
+        })
+          .select("-images.data")
+          .sort("-createdAt")
+          .exec();
+
+        return res.json(salon);
       }
-      console.log(salonType.includes("%"));
-      let salon = await Salon.find(filter)
-        .select("-images.data")
-        .sort("-createdAt")
-        .exec();
-      res.json(salon);
+      console.log(salonType.includes("%20"));
     }
   } catch (err) {
     console.log(err);
